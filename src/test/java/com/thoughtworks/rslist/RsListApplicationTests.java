@@ -18,15 +18,15 @@ class RsListApplicationTests {
 
     @Test
     public void should_return_one_rs_event() throws Exception {
-        mockMvc.perform(get("/list/1"))
+        mockMvc.perform(get("/rs/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("第一条事件"));
 
-        mockMvc.perform(get("/list/2"))
+        mockMvc.perform(get("/rs/2"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("第二条事件"));
 
-        mockMvc.perform(get("list/3"))
+        mockMvc.perform(get("/rs/3"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("第三条事件"));
     }
