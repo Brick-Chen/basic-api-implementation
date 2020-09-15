@@ -1,5 +1,8 @@
 package com.thoughtworks.rslist;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.rslist.dto.RsEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -75,6 +78,23 @@ class RsListApplicationTests {
                 .andExpect(jsonPath("$[2].keyword", is("无分类")))
                 .andExpect(jsonPath("$[3].eventName", is("猪肉涨价了")))
                 .andExpect(jsonPath("$[3].keyword", is("经济")));
+    }
+
+    @Test
+    public void should_modify_a_rs_eventName_or_keyword() throws Exception {
+        RsEvent onlyModifyEventName = new RsEvent("只有风暴才能击倒大树", "");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json1 = objectMapper.writeValueAsString(onlyModifyEventName);
+
+        mockMvc.perform(post("/rs/event/1")
+                .content(json1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/rs/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("无分类")));
     }
 
 }
