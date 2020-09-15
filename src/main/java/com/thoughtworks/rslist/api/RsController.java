@@ -54,4 +54,12 @@ public class RsController {
       target.setKeyword(modifyKeyword);
     }
   }
+
+  @PostMapping("/rs/event/del/{index}")
+  public void delEvent(@PathVariable int index) {
+    if (index < 1 || index > rsList.size()) {
+      return;
+    }
+    rsList.remove(index - 1);
+  }
 }
