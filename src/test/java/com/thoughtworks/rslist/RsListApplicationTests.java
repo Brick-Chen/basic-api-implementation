@@ -95,6 +95,32 @@ class RsListApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("无分类")));
+
+        RsEvent onlyModifyKeyword = new RsEvent("", "科学类");
+        String json2 = objectMapper.writeValueAsString(onlyModifyKeyword);
+
+        mockMvc.perform(post("/rs/event/2")
+                .content(json2)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/rs/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("第二条事件")))
+                .andExpect(jsonPath("$.keyword", is("科学类")));
+
+        RsEvent ModifyBothEventNameAndKeyword = new RsEvent("现在是大老爹拿球", "篮球类");
+        String json3 = objectMapper.writeValueAsString(ModifyBothEventNameAndKeyword);
+
+        mockMvc.perform(post("/rs/event/3")
+                .content(json3)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/rs/3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("现在是大老爹拿球")))
+                .andExpect(jsonPath("$.keyword", is("篮球类")));
     }
 
 }

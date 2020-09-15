@@ -1,5 +1,7 @@
 package com.thoughtworks.rslist.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +36,22 @@ public class RsController {
   @PostMapping("/rs/event")
   public void addRsEvent(@RequestBody RsEvent rsEvent) {
     rsList.add(rsEvent);
+  }
+
+  @PostMapping("/rs/event/{index}")
+  public void modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws JsonProcessingException {
+    RsEvent target = rsList.get(index - 1);
+    ObjectMapper objectMapper = new ObjectMapper();
+    RsEvent event = objectMapper.readValue(modificationInfo, RsEvent.class);
+
+    String modifyName = event.getEventName();
+    if (modifyName != null && modifyName.length() != 0) {
+      target.setEventName(modifyName);
+    }
+
+    String modifyKeyword = event.getKeyword();
+    if(modifyKeyword != null && modifyKeyword.length() != 0) {
+      target.setKeyword(modifyKeyword);
+    }
   }
 }
