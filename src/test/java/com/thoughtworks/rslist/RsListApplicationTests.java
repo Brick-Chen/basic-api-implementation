@@ -20,6 +20,6 @@ class RsListApplicationTests {
     void should_get_rs_list() throws Exception {
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[第一条事件,第二条事件,第三条事件]"));
+                .andExpect(content().string("[第一条事件, 第二条事件, 第三条事件]"));
     }
 }
