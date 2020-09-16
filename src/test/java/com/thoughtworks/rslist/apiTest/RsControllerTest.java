@@ -66,4 +66,28 @@ public class RsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void should_not_register_when_user_age_is_below_18() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 17, "male", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_not_register_when_user_age_is_above_100() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 101, "male", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
