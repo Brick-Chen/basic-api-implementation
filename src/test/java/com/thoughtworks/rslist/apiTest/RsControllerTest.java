@@ -90,4 +90,16 @@ public class RsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void should_not_register_when_user_email_is_invalid() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }

@@ -19,6 +19,8 @@ public class UserDto {
 
     @NotEmpty
     private String gender;
+
+    @Email
     private String email;
     private String phone;
 
