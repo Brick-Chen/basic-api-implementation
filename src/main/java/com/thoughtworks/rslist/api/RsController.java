@@ -2,10 +2,12 @@ package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
+import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,8 +33,15 @@ public class RsController {
   }
 
   @PostMapping("/rs/event")
-  public void addRsEvent(@RequestBody RsEvent rsEvent) {
+  public void addRsEvent(@Valid @RequestBody RsEvent rsEvent) {
     List<RsEvent> rsList = userService.getRsEvents();
+    List<UserDto> userList = userService.getUsersList();
+
+    UserDto userDto = new UserDto(rsEvent.getUser());
+
+    if (!userList.contains(userDto)) {
+      userList.add(userDto);
+    }
     rsList.add(rsEvent);
   }
 

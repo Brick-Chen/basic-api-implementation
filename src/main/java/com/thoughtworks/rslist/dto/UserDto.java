@@ -3,6 +3,7 @@ package com.thoughtworks.rslist.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @Setter
@@ -36,5 +37,24 @@ public class UserDto {
         this.gender = gender;
         this.email = email;
         this.phone = phone;
+    }
+
+    public UserDto(@Valid UserDto other) {
+        this.name = other.getName();
+        this.age = other.getAge();
+        this.gender = other.getGender();
+        this.email = other.getEmail();
+        this.phone = other.getPhone();
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof UserDto)) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        UserDto other = (UserDto) o;
+        return this.getName().equals(((UserDto) o).getName());
     }
 }
