@@ -102,4 +102,28 @@ public class RsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void should_not_register_when_user_phone_is_not_start_with_1() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@123.com", "85297134217");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_not_register_when_user_phone_number_length_is_not_11() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@123.com", "152971342179");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
