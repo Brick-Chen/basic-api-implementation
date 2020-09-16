@@ -22,7 +22,20 @@ public class RsControllerTest {
     @Test
     public void should_not_register_when_user_name_is_empty() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        UserDto userDto = new UserDto(null, 20, "female", "xxx@123.com", "10123456789");
+        UserDto userDto =
+                new UserDto(null, 20, "female", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_not_register_when_user_name_is_above_8_characters() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("123456789", 20, "female", "xxx@123.com", "10123456789");
         String userJson = objectMapper.writeValueAsString(userDto);
         mockMvc.perform(post("/user/register")
                 .content(userJson)
