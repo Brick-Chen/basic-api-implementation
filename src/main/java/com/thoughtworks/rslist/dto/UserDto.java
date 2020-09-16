@@ -12,6 +12,8 @@ public class UserDto {
     @Size(max = 8)
     private String name;
     private Integer age;
+
+    @NotNull
     private String gender;
     private String email;
     private String phone;
