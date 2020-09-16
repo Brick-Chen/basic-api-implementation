@@ -8,16 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
-public class RsController {
+public class UserController {
+    @Autowired
+    UserService userService;
 
-  @Autowired
-  UserService userService;
-
-  private List<String> rsList = Arrays.asList("第一条事件", "第二条事件", "第三条事件");
-
+    @PostMapping("/user/register")
+    public void registration(@Valid @RequestBody UserDto userDto) {
+        userService.getUsersList().add(userDto);
+    }
 }
