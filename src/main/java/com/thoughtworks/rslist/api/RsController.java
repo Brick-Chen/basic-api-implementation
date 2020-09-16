@@ -5,6 +5,7 @@ import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,10 @@ public class RsController {
       userList.add(userDto);
     }
     rsList.add(rsEvent);
-    return ResponseEntity.created(null).build();
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.set("index", String.valueOf(rsList.size()));
+    return ResponseEntity.status(201).headers(httpHeaders).build();
+//    return ResponseEntity.created(null).build();
   }
 
   @PostMapping("/rs/event/{index}")

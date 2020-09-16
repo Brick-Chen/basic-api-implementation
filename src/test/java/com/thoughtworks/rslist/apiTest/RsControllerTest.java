@@ -272,7 +272,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(header().string("index", "4"));
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
