@@ -5,6 +5,7 @@ import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,23 +18,23 @@ public class RsController {
   UserService userService;
 
   @GetMapping("/rs/{index}")
-  public RsEvent getRsEvent(@PathVariable int index) {
+  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
     List<RsEvent> rsList = userService.getRsEvents();
-    return rsList.get(index - 1);
+    return ResponseEntity.ok(rsList.get(index - 1));
   }
 
   @GetMapping("/rs/list")
-  public List<RsEvent> getRsEventsByRange(@RequestParam(required = false) Integer start,
+  public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
                                           @RequestParam(required = false) Integer end) {
     List<RsEvent> rsList = userService.getRsEvents();
     if (start == null || end == null) {
-      return rsList;
+      return ResponseEntity.ok(rsList);
     }
-    return rsList.subList(start - 1, end);
+    return ResponseEntity.ok(rsList.subList(start - 1, end));
   }
 
   @PostMapping("/rs/event")
-  public void addRsEvent(@Valid @RequestBody RsEvent rsEvent) {
+  public ResponseEntity addRsEvent(@Valid @RequestBody RsEvent rsEvent) {
     List<RsEvent> rsList = userService.getRsEvents();
     List<UserDto> userList = userService.getUsersList();
 
@@ -43,10 +44,11 @@ public class RsController {
       userList.add(userDto);
     }
     rsList.add(rsEvent);
+    return ResponseEntity.created(null).build();
   }
 
   @PostMapping("/rs/event/{index}")
-  public void modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws Exception {
+  public ResponseEntity modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws Exception {
     List<RsEvent> rsList = userService.getRsEvents();
     RsEvent target = rsList.get(index - 1);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -61,15 +63,17 @@ public class RsController {
     if(modifyKeyword != null && modifyKeyword.length() != 0) {
       target.setKeyword(modifyKeyword);
     }
+    return ResponseEntity.created(null).build();
   }
 
   @PostMapping("/rs/event/del/{index}")
-  public void delEvent(@PathVariable int index) {
+  public ResponseEntity delEvent(@PathVariable int index) {
     List<RsEvent> rsList = userService.getRsEvents();
     if (index < 1 || index > rsList.size()) {
-      return;
+      return ResponseEntity.created(null).build();
     }
     rsList.remove(index - 1);
+    return ResponseEntity.created(null).build();
   }
 
 }

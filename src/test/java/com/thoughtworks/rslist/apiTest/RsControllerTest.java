@@ -197,7 +197,7 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
@@ -272,7 +272,7 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
@@ -327,7 +327,7 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event/1")
                 .content(json1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/1"))
                 .andExpect(status().isOk())
@@ -340,7 +340,7 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event/2")
                 .content(json2)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/2"))
                 .andExpect(status().isOk())
@@ -353,7 +353,7 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event/3")
                 .content(json3)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/3"))
                 .andExpect(status().isOk())
@@ -364,7 +364,7 @@ public class RsControllerTest {
     @Test
     public void should_delete_rs_event_given_number() throws Exception {
         mockMvc.perform(post("/rs/event/del/2"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
