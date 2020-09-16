@@ -23,7 +23,7 @@ public class RsControllerTest {
     public void should_not_register_when_user_name_is_empty() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto =
-                new UserDto(null, 20, "female", "xxx@123.com", "10123456789");
+                new UserDto("", 20, "female", "xxx@123.com", "10123456789");
         String userJson = objectMapper.writeValueAsString(userDto);
         mockMvc.perform(post("/user/register")
                 .content(userJson)
@@ -48,6 +48,18 @@ public class RsControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto =
                 new UserDto("chen", 20, null, "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_not_register_when_user_age_is_null() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", null, "male", "xxx@123.com", "10123456789");
         String userJson = objectMapper.writeValueAsString(userDto);
         mockMvc.perform(post("/user/register")
                 .content(userJson)
