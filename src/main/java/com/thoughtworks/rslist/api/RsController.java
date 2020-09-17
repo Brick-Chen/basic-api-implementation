@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
+import com.thoughtworks.rslist.exceptions.CommentError;
 import com.thoughtworks.rslist.exceptions.RsListIndexOutOfBoundException;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -86,6 +88,27 @@ public class RsController {
     }
     rsList.remove(index - 1);
     return ResponseEntity.status(200).build();
+  }
+
+  @ExceptionHandler(IndexOutOfBoundsException.class)
+  public ResponseEntity<CommentError> handleStartAndEndException(IndexOutOfBoundsException ex) {
+    CommentError commentError = new CommentError();
+    commentError.setError("invalid request param");
+    return ResponseEntity.status(400).body(commentError);
+  }
+
+  @ExceptionHandler(RsListIndexOutOfBoundException.class)
+  public ResponseEntity<CommentError> handleGetInvalidIndexFromRsListException(RsListIndexOutOfBoundException ex) {
+    CommentError commentError = new CommentError();
+    commentError.setError("invalid index");
+    return ResponseEntity.status(400).body(commentError);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<CommentError> handleInvalidEventException(MethodArgumentNotValidException ex) {
+    CommentError commentError = new CommentError();
+    commentError.setError("invalid param");
+    return ResponseEntity.status(400).body(commentError);
   }
 
 }

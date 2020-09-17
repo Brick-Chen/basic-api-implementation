@@ -65,7 +65,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));;
     }
 
     @Test
@@ -77,7 +78,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -89,7 +91,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -101,7 +104,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -113,7 +117,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -125,7 +130,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -137,7 +143,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -149,7 +156,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
@@ -161,7 +169,8 @@ public class RsControllerTest {
         mockMvc.perform(post("/rs/event")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
