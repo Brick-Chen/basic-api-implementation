@@ -6,6 +6,7 @@ import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,8 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -31,7 +31,12 @@ public class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
-        @Test
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
+
+    @Test
     public void should__register_when_user_info_is_valid() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto =
@@ -53,7 +58,6 @@ public class UserControllerTest {
 
     @Test
     public void should_get_user_when_input_user_id() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
         UserEntity user = UserEntity.builder()
                 .userName("chen")
                 .age(22)
@@ -72,6 +76,29 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.gender" ,is("male")))
                 .andExpect(jsonPath("$.email" ,is("xxx@123.com")))
                 .andExpect(jsonPath("$.phone" ,is("15297134217")));
+    }
+
+    @Test
+    public void should_delete_user_when_get_user_id() throws Exception {
+        UserEntity user = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .build();
+        userRepository.save(user);
+
+        List<UserEntity> users = userRepository.findAll();
+        Assertions.assertEquals(1, users.size());
+
+        Integer id = user.getId();
+        String url = "/del/users/" + id;
+        mockMvc.perform(delete(url))
+                .andExpect(status().isOk());
+
+        users = userRepository.findAll();
+        Assertions.assertEquals(0, users.size());
     }
 
 

@@ -49,6 +49,16 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(200).body(null));
     }
 
+    @DeleteMapping("/del/users/{id}")
+    public ResponseEntity deleteUserById(@PathVariable Integer id) {
+        Optional<UserEntity> target = userRepository.findById(id);
+        if (target.isPresent()) {
+            userRepository.deleteById(id);
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(400).build();
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUserList() {
         return ResponseEntity.ok(userService.getUsersList());
