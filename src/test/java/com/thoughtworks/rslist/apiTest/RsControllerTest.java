@@ -336,4 +336,18 @@ public class RsControllerTest {
                 .andExpect(jsonPath("$[1].keyword", is("无分类")));
     }
 
+    @Test
+    public void should_return_400_when_start_param_of_rs_list_is_not_valid() throws Exception {
+        mockMvc.perform(get("/rs/list?start=10&end=5"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid request param")));
+    }
+
+    @Test
+    public void should_return_400_when_end_param_of_rs_list_is_not_valid() throws Exception {
+        mockMvc.perform(get("/rs/list?start=1&end=10"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid request param")));
+    }
+
 }

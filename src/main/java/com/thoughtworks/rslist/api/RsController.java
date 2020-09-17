@@ -34,6 +34,9 @@ public class RsController {
     if (start == null || end == null) {
       return ResponseEntity.ok(rsList);
     }
+    if (start < 1 || start > rsList.size() || end < 0 || end > rsList.size()) {
+      throw new IndexOutOfBoundsException();
+    }
     return ResponseEntity.ok(rsList.subList(start - 1, end));
   }
 
