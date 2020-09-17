@@ -31,7 +31,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -43,7 +44,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -55,7 +57,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -67,7 +70,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -79,7 +83,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -91,7 +96,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -103,7 +109,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -115,7 +122,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
@@ -127,11 +135,12 @@ public class UserControllerTest {
         mockMvc.perform(post("/user/register")
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid user")));
     }
 
     @Test
-    public void should__register_when_user_info_is_valid() throws Exception {
+    public void should_register_when_user_info_is_valid() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto =
                 new UserDto("chen", 22, "male", "xxx@123.com", "15297134217");
