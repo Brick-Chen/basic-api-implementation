@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -325,10 +324,10 @@ public class RsControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String json1 = objectMapper.writeValueAsString(onlyModifyEventName);
 
-        mockMvc.perform(post("/rs/event/1")
+        mockMvc.perform(put("/rs/event/1")
                 .content(json1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/1"))
                 .andExpect(status().isOk())
@@ -338,10 +337,10 @@ public class RsControllerTest {
         RsEvent onlyModifyKeyword = new RsEvent("", "科学类", null);
         String json2 = objectMapper.writeValueAsString(onlyModifyKeyword);
 
-        mockMvc.perform(post("/rs/event/2")
+        mockMvc.perform(put("/rs/event/2")
                 .content(json2)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/2"))
                 .andExpect(status().isOk())
@@ -351,10 +350,10 @@ public class RsControllerTest {
         RsEvent ModifyBothEventNameAndKeyword = new RsEvent("现在是大老爹拿球", "篮球类", null);
         String json3 = objectMapper.writeValueAsString(ModifyBothEventNameAndKeyword);
 
-        mockMvc.perform(post("/rs/event/3")
+        mockMvc.perform(put("/rs/event/3")
                 .content(json3)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/3"))
                 .andExpect(status().isOk())
@@ -364,8 +363,8 @@ public class RsControllerTest {
 
     @Test
     public void should_delete_rs_event_given_number() throws Exception {
-        mockMvc.perform(post("/rs/event/del/2"))
-                .andExpect(status().isCreated());
+        mockMvc.perform(put("/rs/event/del/2"))
+                .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())

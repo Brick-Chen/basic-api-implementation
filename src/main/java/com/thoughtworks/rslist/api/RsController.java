@@ -45,13 +45,11 @@ public class RsController {
       userList.add(userDto);
     }
     rsList.add(rsEvent);
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.set("index", String.valueOf(rsList.size()));
+    HttpHeaders httpHeaders = userService.setHeaders(rsList.size());
     return ResponseEntity.status(201).headers(httpHeaders).build();
-//    return ResponseEntity.created(null).build();
   }
 
-  @PostMapping("/rs/event/{index}")
+  @PutMapping("/rs/event/{index}")
   public ResponseEntity modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws Exception {
     List<RsEvent> rsList = userService.getRsEvents();
     RsEvent target = rsList.get(index - 1);
@@ -67,17 +65,17 @@ public class RsController {
     if(modifyKeyword != null && modifyKeyword.length() != 0) {
       target.setKeyword(modifyKeyword);
     }
-    return ResponseEntity.created(null).build();
+    return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/rs/event/del/{index}")
+  @PutMapping("/rs/event/del/{index}")
   public ResponseEntity delEvent(@PathVariable int index) {
     List<RsEvent> rsList = userService.getRsEvents();
     if (index < 1 || index > rsList.size()) {
-      return ResponseEntity.created(null).build();
+      return ResponseEntity.status(200).build();
     }
     rsList.remove(index - 1);
-    return ResponseEntity.created(null).build();
+    return ResponseEntity.status(200).build();
   }
 
 }

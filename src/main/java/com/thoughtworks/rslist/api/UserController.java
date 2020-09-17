@@ -22,10 +22,8 @@ public class UserController {
     public ResponseEntity registration(@Valid @RequestBody UserDto userDto) {
         userService.getUsersList().add(userDto);
         int pos = userService.getUsersList().size();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("index", String.valueOf(pos));
+        HttpHeaders httpHeaders = userService.setHeaders(pos);
         return ResponseEntity.status(201).headers(httpHeaders).build();
-//        return ResponseEntity.created(null).build();
     }
 
     @GetMapping("/user/list")

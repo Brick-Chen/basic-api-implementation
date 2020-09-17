@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +30,12 @@ public class UserService {
         events.add(new RsEvent("第三条事件", "无分类", userDto));
         users.add(userDto);
         return events;
+    }
+
+    public HttpHeaders setHeaders(int num) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("index", String.valueOf(num));
+        return  httpHeaders;
     }
 
 }
