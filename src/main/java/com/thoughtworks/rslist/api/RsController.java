@@ -1,5 +1,6 @@
 package com.thoughtworks.rslist.api;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
@@ -18,12 +19,14 @@ public class RsController {
   @Autowired
   UserService userService;
 
+  @JsonView(RsEvent.WithoutUserView.class)
   @GetMapping("/rs/{index}")
   public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
     List<RsEvent> rsList = userService.getRsEvents();
     return ResponseEntity.ok(rsList.get(index - 1));
   }
 
+  @JsonView(RsEvent.WithoutUserView.class)
   @GetMapping("/rs/list")
   public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
                                           @RequestParam(required = false) Integer end) {
