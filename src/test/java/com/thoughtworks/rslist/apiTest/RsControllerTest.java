@@ -364,7 +364,7 @@ public class RsControllerTest {
 
     @Test
     public void should_delete_rs_event_given_number() throws Exception {
-        mockMvc.perform(put("/rs/event/del/2"))
+        mockMvc.perform(delete("/rs/event/del/2"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/list"))

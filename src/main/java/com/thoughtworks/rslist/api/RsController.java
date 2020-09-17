@@ -68,7 +68,7 @@ public class RsController {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/rs/event/del/{index}")
+  @DeleteMapping("/rs/event/del/{index}")
   public ResponseEntity delEvent(@PathVariable int index) {
     List<RsEvent> rsList = userService.getRsEvents();
     if (index < 1 || index > rsList.size()) {
