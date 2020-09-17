@@ -1,5 +1,3 @@
-### 作业描述
-
 #### 重复课堂上的Demo完成练习
 * 给所有接口添加错误处理：
     1. get /rs/list时对start和end进行校验，如果超出范围则返回 400 {error:"invalid request param"}
