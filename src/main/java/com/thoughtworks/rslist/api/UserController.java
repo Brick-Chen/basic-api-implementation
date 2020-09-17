@@ -7,13 +7,11 @@ import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -36,11 +34,19 @@ public class UserController {
                 .phone(userDto.getPhone())
                 .build();
         userRepository.save(userEntity);
-//        userService.getUsersList().add(userDto);
+        userService.getUsersList().add(userDto);
 //        int pos = userService.getUsersList().size();
 //        HttpHeaders httpHeaders = userService.setHeaders(pos);
 //        return ResponseEntity.status(201).headers(httpHeaders).build();
         return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping("users/{id}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
+        Optional<UserEntity> target = userRepository.findById(id);
+        return target.
+                map(userEntity -> ResponseEntity.status(200).body(userEntity))
+                .orElseGet(() -> ResponseEntity.status(200).body(null));
     }
 
     @GetMapping("/users")

@@ -1,5 +1,6 @@
 package com.thoughtworks.rslist.apiTest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.UserEntity;
@@ -40,7 +41,6 @@ public class UserControllerTest {
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-//                .andExpect(header().string("index", "2"));
 
         List<UserEntity> users = userRepository.findAll();
         Assertions.assertEquals(1, users.size());
@@ -50,6 +50,30 @@ public class UserControllerTest {
         Assertions.assertEquals("xxx@123.com", users.get(0).getEmail());
         Assertions.assertEquals("15297134217", users.get(0).getPhone());
     }
+
+    @Test
+    public void should_get_user_when_input_user_id() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserEntity user = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .build();
+        userRepository.save(user);
+
+        Integer id = user.getId();
+        String url = "/users/" + id;
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userName" ,is("chen")))
+                .andExpect(jsonPath("$.age" ,is(22)))
+                .andExpect(jsonPath("$.gender" ,is("male")))
+                .andExpect(jsonPath("$.email" ,is("xxx@123.com")))
+                .andExpect(jsonPath("$.phone" ,is("15297134217")));
+    }
+
 
 //    @Test
 //    public void should_not_register_when_user_name_is_empty() throws Exception {
