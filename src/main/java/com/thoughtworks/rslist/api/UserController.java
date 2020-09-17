@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.status(201).headers(httpHeaders).build();
     }
 
-    @GetMapping("/user/list")
+    @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUserList() {
         return ResponseEntity.ok(userService.getUsersList());
     }

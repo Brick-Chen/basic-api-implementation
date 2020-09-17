@@ -166,14 +166,14 @@ public class RsControllerTest {
 
     @Test
     public void should_only_add_a_rs_event_when_username_is_in_user_list() throws Exception {
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("admin")))
-                .andExpect(jsonPath("$[0].age", is(99)))
-                .andExpect(jsonPath("$[0].gender", is("male")))
-                .andExpect(jsonPath("$[0].email", is("admin@twu.com")))
-                .andExpect(jsonPath("$[0].phone", is("18888888888")));
+                .andExpect(jsonPath("$[0].user_name", is("admin")))
+                .andExpect(jsonPath("$[0].user_age", is(99)))
+                .andExpect(jsonPath("$[0].user_gender", is("male")))
+                .andExpect(jsonPath("$[0].user_email", is("admin@twu.com")))
+                .andExpect(jsonPath("$[0].user_phone", is("18888888888")));
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
@@ -209,27 +209,27 @@ public class RsControllerTest {
                 .andExpect(jsonPath("$[3].keyword", is("经济")));
 
 
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("admin")))
-                .andExpect(jsonPath("$[0].age", is(99)))
-                .andExpect(jsonPath("$[0].gender", is("male")))
-                .andExpect(jsonPath("$[0].email", is("admin@twu.com")))
-                .andExpect(jsonPath("$[0].phone", is("18888888888")));
+                .andExpect(jsonPath("$[0].user_name", is("admin")))
+                .andExpect(jsonPath("$[0].user_age", is(99)))
+                .andExpect(jsonPath("$[0].user_gender", is("male")))
+                .andExpect(jsonPath("$[0].user_email", is("admin@twu.com")))
+                .andExpect(jsonPath("$[0].user_phone", is("18888888888")));
 
     }
 
     @Test
     public void should_add_both_rs_event_and_user_when_user_name_not_in_user_list() throws Exception {
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("admin")))
-                .andExpect(jsonPath("$[0].age", is(99)))
-                .andExpect(jsonPath("$[0].gender", is("male")))
-                .andExpect(jsonPath("$[0].email", is("admin@twu.com")))
-                .andExpect(jsonPath("$[0].phone", is("18888888888")));
+                .andExpect(jsonPath("$[0].user_name", is("admin")))
+                .andExpect(jsonPath("$[0].user_age", is(99)))
+                .andExpect(jsonPath("$[0].user_gender", is("male")))
+                .andExpect(jsonPath("$[0].user_email", is("admin@twu.com")))
+                .andExpect(jsonPath("$[0].user_phone", is("18888888888")));
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk())
@@ -263,19 +263,19 @@ public class RsControllerTest {
                 .andExpect(jsonPath("$[2].keyword", is("无分类")));
 
 
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name", is("admin")))
-                .andExpect(jsonPath("$[0].age", is(99)))
-                .andExpect(jsonPath("$[0].gender", is("male")))
-                .andExpect(jsonPath("$[0].email", is("admin@twu.com")))
-                .andExpect(jsonPath("$[0].phone", is("18888888888")))
-                .andExpect(jsonPath("$[1].name", is("max")))
-                .andExpect(jsonPath("$[1].age", is(22)))
-                .andExpect(jsonPath("$[1].gender", is("male")))
-                .andExpect(jsonPath("$[1].email", is("max@twu.com")))
-                .andExpect(jsonPath("$[1].phone", is("10123456789")));
+                .andExpect(jsonPath("$[0].user_name", is("admin")))
+                .andExpect(jsonPath("$[0].user_age", is(99)))
+                .andExpect(jsonPath("$[0].user_gender", is("male")))
+                .andExpect(jsonPath("$[0].user_email", is("admin@twu.com")))
+                .andExpect(jsonPath("$[0].user_phone", is("18888888888")))
+                .andExpect(jsonPath("$[1].user_name", is("max")))
+                .andExpect(jsonPath("$[1].user_age", is(22)))
+                .andExpect(jsonPath("$[1].user_gender", is("male")))
+                .andExpect(jsonPath("$[1].user_email", is("max@twu.com")))
+                .andExpect(jsonPath("$[1].user_phone", is("10123456789")));
 
     }
 

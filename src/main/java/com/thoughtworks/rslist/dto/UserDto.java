@@ -1,5 +1,6 @@
 package com.thoughtworks.rslist.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,20 +12,25 @@ import javax.validation.constraints.*;
 public class UserDto {
     @NotEmpty
     @Size(max = 8)
+    @JsonProperty("user_name")
     private String name;
 
     @NotNull
     @Min(18)
     @Max(100)
+    @JsonProperty("user_age")
     private Integer age;
 
     @NotEmpty
+    @JsonProperty("user_gender")
     private String gender;
 
     @Email
+    @JsonProperty("user_email")
     private String email;
 
     @Pattern(regexp = "^1\\d{10}$")
+    @JsonProperty("user_phone")
     private String phone;
 
     public UserDto() {
