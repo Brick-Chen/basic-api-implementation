@@ -12,4 +12,11 @@ public class ExceptionsHandler {
         commentError.setError("invalid request param");
         return ResponseEntity.status(400).body(commentError);
     }
+
+    @ExceptionHandler(RsListIndexOutOfBoundException.class)
+    public ResponseEntity<CommentError> handleGetInvalidIndexFromRsListException() {
+        CommentError commentError = new CommentError();
+        commentError.setError("invalid index");
+        return ResponseEntity.status(400).body(commentError);
+    }
 }

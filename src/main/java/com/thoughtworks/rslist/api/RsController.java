@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
+import com.thoughtworks.rslist.exceptions.RsListIndexOutOfBoundException;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,11 @@ public class RsController {
 
   @JsonView(RsEvent.WithoutUserView.class)
   @GetMapping("/rs/{index}")
-  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
+  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) throws RsListIndexOutOfBoundException {
     List<RsEvent> rsList = userService.getRsEvents();
+    if (index < 1 || index > rsList.size()) {
+      throw new RsListIndexOutOfBoundException();
+    }
     return ResponseEntity.ok(rsList.get(index - 1));
   }
 
