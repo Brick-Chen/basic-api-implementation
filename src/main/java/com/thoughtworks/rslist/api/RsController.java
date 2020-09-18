@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.RsEventEntity;
+import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exceptions.CommentError;
 import com.thoughtworks.rslist.exceptions.InvalidRsEventIndexException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
@@ -41,7 +42,10 @@ public class RsController {
     RsEventEntity rsEventEntity = RsEventEntity.builder()
             .eventName(rsEvent.getEventName())
             .keyword(rsEvent.getKeyword())
-            .userId(rsEvent.getUserId())
+            .user(UserEntity
+                    .builder()
+                    .id(rsEvent.getUserId())
+                    .build())
             .build();
     rsEventRepository.save(rsEventEntity);
     return ResponseEntity.created(null).build();
@@ -54,9 +58,16 @@ public class RsController {
       throw new InvalidRsEventIndexException();
     }
     RsEventEntity rsEvent = rsEventEntity.get();
+    UserEntity user = rsEvent.getUser();
+
     RsEvent target = RsEvent.builder()
             .eventName(rsEvent.getEventName())
             .keyword(rsEvent.getKeyword())
+            .user(new UserDto(user.getUserName(),
+                    user.getAge(),
+                    user.getGender(),
+                    user.getEmail(),
+                    user.getPhone()))
             .build();
     return ResponseEntity.ok(target);
   }

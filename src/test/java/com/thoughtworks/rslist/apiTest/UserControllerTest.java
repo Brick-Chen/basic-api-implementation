@@ -97,7 +97,7 @@ public class UserControllerTest {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName("只有风暴才能击倒大树")
                 .keyword("游戏类")
-                .userId(user.getId())
+                .user(user)
                 .build();
 
         rsEventRepository.save(rsEventEntity);

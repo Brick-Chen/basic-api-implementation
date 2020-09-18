@@ -67,7 +67,7 @@ public class RsControllerTest {
         Assertions.assertEquals(1, rsEvents.size());
         Assertions.assertEquals("只有风暴才能击倒大树", rsEvents.get(0).getEventName());
         Assertions.assertEquals("游戏类", rsEvents.get(0).getKeyword());
-        Assertions.assertEquals(userEntity.getId(), rsEvents.get(0).getUserId());
+        Assertions.assertEquals(userEntity.getId(), rsEvents.get(0).getUser().getId());
     }
 
     @Test
@@ -97,14 +97,15 @@ public class RsControllerTest {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName("只有风暴才能击倒大树")
                 .keyword("游戏类")
-                .userId(userEntity.getId())
+                .user(userEntity)
                 .build();
         rsEventRepository.save(rsEventEntity);
 
         mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
-                .andExpect(jsonPath("$.keyword", is("游戏类")));
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
     }
 //
 //    @Test

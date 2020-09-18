@@ -22,6 +22,9 @@ public class RsEvent {
     @NotNull
     private int userId;
 
+    @Valid
+    private UserDto user;
+
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
@@ -46,5 +49,15 @@ public class RsEvent {
     @JsonIgnore
     public int getUserId() {
         return userId;
+    }
+
+    @JsonIgnore
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
+    @JsonProperty
+    public UserDto getUser() {
+        return user;
     }
 }
