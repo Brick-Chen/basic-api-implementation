@@ -5,13 +5,14 @@ import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserDto implements Serializable {
     @NotEmpty
     @Size(max = 8)
     @JsonProperty("user_name")

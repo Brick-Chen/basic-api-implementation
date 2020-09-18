@@ -39,6 +39,7 @@ public class UserControllerTest {
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
+        rsEventRepository.deleteAll();
     }
 
     @Test

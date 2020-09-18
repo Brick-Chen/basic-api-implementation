@@ -80,6 +80,7 @@ public class RsControllerTest {
         Assertions.assertEquals("只有风暴才能击倒大树", rsEvents.get(0).getEventName());
         Assertions.assertEquals("游戏类", rsEvents.get(0).getKeyword());
         Assertions.assertEquals(userEntity.getId(), rsEvents.get(0).getUser().getId());
+        Assertions.assertEquals(0, rsEvents.get(0).getVoteNum());
     }
 
     @Test
@@ -110,6 +111,7 @@ public class RsControllerTest {
                 .eventName("只有风暴才能击倒大树")
                 .keyword("游戏类")
                 .user(userEntity)
+                .voteNum(0)
                 .build();
         rsEventRepository.save(rsEventEntity);
 
@@ -117,7 +119,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
     }
 
     @Test
@@ -143,7 +146,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
 
         String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"篮球类\", \"userId\":" + 20  + "}";
         mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
@@ -175,7 +179,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
 
         String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"\", \"userId\":" + userEntity.getId()  + "}";
         mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
@@ -187,7 +192,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("现在是大老爹拿球")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
     }
 
     @Test
@@ -213,7 +219,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
 
         String jason = "{\"eventName\":\"\", \"keyword\":\"篮球类\", \"userId\":" + userEntity.getId()  + "}";
         mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
@@ -225,7 +232,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("篮球类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
     }
 
     @Test
@@ -251,7 +259,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
 
         String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"篮球类\", \"userId\":" + userEntity.getId()  + "}";
         mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
@@ -263,7 +272,8 @@ public class RsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName", is("现在是大老爹拿球")))
                 .andExpect(jsonPath("$.keyword", is("篮球类")))
-                .andExpect(jsonPath("$.user.user_name", is("chen")));
+                .andExpect(jsonPath("$.id", is(rsEventEntity.getId())))
+                .andExpect(jsonPath("$.voteNum", is(0)));
     }
 
     @Test

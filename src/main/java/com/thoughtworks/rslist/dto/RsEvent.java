@@ -22,6 +22,10 @@ public class RsEvent {
     @NotNull
     private int userId;
 
+    private int id;
+
+    private int voteNum;
+
     @Valid
     private UserDto user;
 
@@ -59,5 +63,23 @@ public class RsEvent {
     @JsonProperty
     public UserDto getUser() {
         return user;
+    }
+
+    @JsonProperty
+    public int getId() {
+        return id;
+    }
+
+    @JsonIgnore
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getVoteNum() {
+        return voteNum;
+    }
+
+    public void setVoteNum(int voteNum) {
+        this.voteNum = voteNum;
     }
 }

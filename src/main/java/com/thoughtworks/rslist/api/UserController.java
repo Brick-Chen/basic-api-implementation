@@ -10,11 +10,13 @@ import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -73,17 +75,35 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUserList() {
-        return ResponseEntity.ok(userService.getUsersList());
+        List<UserDto> userDtoList = userRepository
+                .findAll().stream().map(UserController::mapFromUserEntityToUserDto).collect(Collectors.toList());
+        return ResponseEntity.ok(userDtoList);
     }
 
     @ExceptionHandler(InvalidUserIdException.class)
-    public ResponseEntity<CommentError> handleInvalidUserIdException(InvalidUserIdException invalidUserIdException) {
+    public ResponseEntity<CommentError> handleInvalidUserIdException(InvalidUserIdException ex) {
         CommentError commentError = new CommentError();
-        commentError.setErrorMessage("invalid param");
+        commentError.setErrorMessage("invalid user id");
         return ResponseEntity.badRequest().body(commentError);
     }
 
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<CommentError> handleInvalidUserException(MethodArgumentNotValidException ex) {
+//        CommentError commentError = new CommentError();
+//        commentError.setErrorMessage("invalid user");
+//        return ResponseEntity.badRequest().body(commentError);
+//    }
+
     private static UserDto mapFromUserEntityToUserDto(UserEntity userEntity) {
-        return null;
+        if (userEntity == null) {
+            return null;
+        }
+        return UserDto.builder()
+                .name(userEntity.getUserName())
+                .age(userEntity.getAge())
+                .gender(userEntity.getGender())
+                .email(userEntity.getEmail())
+                .phone(userEntity.getPhone())
+                .build();
     }
 }

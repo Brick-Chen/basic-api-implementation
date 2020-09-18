@@ -20,7 +20,10 @@ public class RsEventEntity {
 
     @Column(name = "name")
     private String eventName;
+
     private String keyword;
+
+    private int voteNum;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
