@@ -3,7 +3,9 @@ package com.thoughtworks.rslist.apiTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.UserDto;
+import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,9 @@ public class UserControllerTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RsEventRepository rsEventRepository;
 
     @BeforeEach
     void setUp() {
@@ -89,16 +94,25 @@ public class UserControllerTest {
                 .build();
         userRepository.save(user);
 
-        List<UserEntity> users = userRepository.findAll();
-        Assertions.assertEquals(1, users.size());
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .userId(user.getId())
+                .build();
+
+        rsEventRepository.save(rsEventEntity);
+
 
         Integer id = user.getId();
         String url = "/del/users/" + id;
         mockMvc.perform(delete(url))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
-        users = userRepository.findAll();
+        List<UserEntity> users = userRepository.findAll();
+        List<RsEventEntity> rsEvents = rsEventRepository.findAll();
+
         Assertions.assertEquals(0, users.size());
+        Assertions.assertEquals(0, rsEvents.size());
     }
 
 

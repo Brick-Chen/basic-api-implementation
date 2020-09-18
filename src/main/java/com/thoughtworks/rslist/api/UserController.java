@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,11 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    private final RsEventRepository rsEventRepository;
+
+    public UserController(UserRepository userRepository,RsEventRepository rsEventRepository) {
         this.userRepository = userRepository;
+        this.rsEventRepository = rsEventRepository;
     }
 
     @PostMapping("/user/register")
@@ -54,7 +58,7 @@ public class UserController {
         Optional<UserEntity> target = userRepository.findById(id);
         if (target.isPresent()) {
             userRepository.deleteById(id);
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(400).build();
     }
