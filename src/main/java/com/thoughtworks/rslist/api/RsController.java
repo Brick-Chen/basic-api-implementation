@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
+import com.thoughtworks.rslist.entity.RsEventEntity;
+import com.thoughtworks.rslist.repository.RsEventRepository;
+import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,66 +22,72 @@ public class RsController {
   @Autowired
   UserService userService;
 
-  @JsonView(RsEvent.WithoutUserView.class)
-  @GetMapping("/rs/{index}")
-  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
-    List<RsEvent> rsList = userService.getRsEvents();
-    return ResponseEntity.ok(rsList.get(index - 1));
-  }
+  private final UserRepository userRepository;
+  private final RsEventRepository rsEventRepository;
 
-  @JsonView(RsEvent.WithoutUserView.class)
-  @GetMapping("/rs/list")
-  public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
-                                          @RequestParam(required = false) Integer end) {
-    List<RsEvent> rsList = userService.getRsEvents();
-    if (start == null || end == null) {
-      return ResponseEntity.ok(rsList);
-    }
-    return ResponseEntity.ok(rsList.subList(start - 1, end));
+  public RsController(UserRepository userRepository, RsEventRepository rsEventRepository) {
+    this.userRepository = userRepository;
+    this.rsEventRepository = rsEventRepository;
   }
 
   @PostMapping("/rs/event")
   public ResponseEntity addRsEvent(@Valid @RequestBody RsEvent rsEvent) {
-    List<RsEvent> rsList = userService.getRsEvents();
-    List<UserDto> userList = userService.getUsersList();
-
-    UserDto userDto = new UserDto(rsEvent.getUser());
-
-    if (!userList.contains(userDto)) {
-      userList.add(userDto);
+    if (!userRepository.existsById(rsEvent.getUserId())) {
+      return ResponseEntity.badRequest().build();
     }
-    rsList.add(rsEvent);
-    HttpHeaders httpHeaders = userService.setHeaders(rsList.size());
-    return ResponseEntity.status(201).headers(httpHeaders).build();
+    RsEventEntity rsEventEntity = RsEventEntity.builder()
+            .eventName(rsEvent.getEventName())
+            .keyword(rsEvent.getKeyword())
+            .userId(rsEvent.getUserId())
+            .build();
+    rsEventRepository.save(rsEventEntity);
+    return ResponseEntity.created(null).build();
   }
 
-  @PutMapping("/rs/event/{index}")
-  public ResponseEntity modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws Exception {
-    List<RsEvent> rsList = userService.getRsEvents();
-    RsEvent target = rsList.get(index - 1);
-    ObjectMapper objectMapper = new ObjectMapper();
-    RsEvent event = objectMapper.readValue(modificationInfo, RsEvent.class);
+//  @GetMapping("/rs/{index}")
+//  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
+//    List<RsEvent> rsList = userService.getRsEvents();
+//    return ResponseEntity.ok(rsList.get(index - 1));
+//  }
 
-    String modifyName = event.getEventName();
-    if (modifyName != null && modifyName.length() != 0) {
-      target.setEventName(modifyName);
-    }
+//  @GetMapping("/rs/list")
+//  public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
+//                                          @RequestParam(required = false) Integer end) {
+//    List<RsEvent> rsList = userService.getRsEvents();
+//    if (start == null || end == null) {
+//      return ResponseEntity.ok(rsList);
+//    }
+//    return ResponseEntity.ok(rsList.subList(start - 1, end));
+//  }
 
-    String modifyKeyword = event.getKeyword();
-    if(modifyKeyword != null && modifyKeyword.length() != 0) {
-      target.setKeyword(modifyKeyword);
-    }
-    return ResponseEntity.ok().build();
-  }
 
-  @DeleteMapping("/rs/event/del/{index}")
-  public ResponseEntity delEvent(@PathVariable int index) {
-    List<RsEvent> rsList = userService.getRsEvents();
-    if (index < 1 || index > rsList.size()) {
-      return ResponseEntity.status(200).build();
-    }
-    rsList.remove(index - 1);
-    return ResponseEntity.status(200).build();
-  }
+//  @PutMapping("/rs/event/{index}")
+//  public ResponseEntity modifyEvent(@PathVariable int index, @RequestBody String modificationInfo) throws Exception {
+//    List<RsEvent> rsList = userService.getRsEvents();
+//    RsEvent target = rsList.get(index - 1);
+//    ObjectMapper objectMapper = new ObjectMapper();
+//    RsEvent event = objectMapper.readValue(modificationInfo, RsEvent.class);
+//
+//    String modifyName = event.getEventName();
+//    if (modifyName != null && modifyName.length() != 0) {
+//      target.setEventName(modifyName);
+//    }
+//
+//    String modifyKeyword = event.getKeyword();
+//    if(modifyKeyword != null && modifyKeyword.length() != 0) {
+//      target.setKeyword(modifyKeyword);
+//    }
+//    return ResponseEntity.ok().build();
+//  }
+//
+//  @DeleteMapping("/rs/event/del/{index}")
+//  public ResponseEntity delEvent(@PathVariable int index) {
+//    List<RsEvent> rsList = userService.getRsEvents();
+//    if (index < 1 || index > rsList.size()) {
+//      return ResponseEntity.status(200).build();
+//    }
+//    rsList.remove(index - 1);
+//    return ResponseEntity.status(200).build();
+//  }
 
 }

@@ -23,12 +23,6 @@ public class UserService {
 
     private List<RsEvent> initRsEvent() {
         List<RsEvent> events = new ArrayList<>();
-        UserDto userDto =
-                new UserDto("admin", 99, "male", "admin@twu.com","18888888888");
-        events.add(new RsEvent("第一条事件","无分类",userDto));
-        events.add(new RsEvent("第二条事件","无分类", userDto));
-        events.add(new RsEvent("第三条事件", "无分类", userDto));
-        users.add(userDto);
         return events;
     }
 
