@@ -1,24 +1,23 @@
 package com.thoughtworks.rslist.api;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
+import com.thoughtworks.rslist.dto.Vote;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.entity.VoteEntity;
 import com.thoughtworks.rslist.exceptions.CommentError;
 import com.thoughtworks.rslist.exceptions.InvalidRsEventIndexException;
 import com.thoughtworks.rslist.exceptions.InvalidUserIdException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
+import com.thoughtworks.rslist.repository.VoteRepository;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,10 +28,13 @@ public class RsController {
 
   private final UserRepository userRepository;
   private final RsEventRepository rsEventRepository;
+  private final VoteRepository voteRepository;
 
-  public RsController(UserRepository userRepository, RsEventRepository rsEventRepository) {
+  public RsController(UserRepository userRepository, RsEventRepository rsEventRepository,
+                      VoteRepository voteRepository) {
     this.userRepository = userRepository;
     this.rsEventRepository = rsEventRepository;
+    this.voteRepository = voteRepository;
   }
 
   @PostMapping("/rs/event")
@@ -96,6 +98,27 @@ public class RsController {
       targetEventEntity.setKeyword(modifiedKeyword);
     }
     rsEventRepository.save(targetEventEntity);
+    return ResponseEntity.created(null).build();
+  }
+
+  @PostMapping("/rs/vote/{rsEventId}")
+  public ResponseEntity voteRsEvent(@RequestBody Vote vote, @PathVariable int rsEventId) {
+    Optional<RsEventEntity> rsEventEntity = rsEventRepository.findById(rsEventId);
+    Optional<UserEntity> userEntity = userRepository.findById(vote.getUserId());
+    if (!rsEventEntity.isPresent() || !userEntity.isPresent() || userEntity.get().getVoteNum() < vote.getVoteNum()) {
+      return ResponseEntity.badRequest().build();
+    }
+    VoteEntity voteEntity = VoteEntity.builder()
+            .user(userEntity.get())
+            .num(vote.getVoteNum())
+            .rsEvent(rsEventEntity.get())
+            .time(vote.getVoteTime())
+            .build();
+    voteRepository.save(voteEntity);
+
+    UserEntity user = userEntity.get();
+    user.setVoteNum(user.getVoteNum() - vote.getVoteNum());
+    userRepository.save(user);
     return ResponseEntity.created(null).build();
   }
 
