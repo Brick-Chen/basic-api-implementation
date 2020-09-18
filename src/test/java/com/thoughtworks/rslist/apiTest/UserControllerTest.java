@@ -116,126 +116,114 @@ public class UserControllerTest {
     }
 
 
-//    @Test
-//    public void should_not_register_when_user_name_is_empty() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("", 20, "female", "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_name_is_empty() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("", 20, "female", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_name_is_above_8_characters() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("123456789", 20, "female", "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_name_is_above_8_characters() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("123456789", 20, "female", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_gender_is_null() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 20, null, "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_gender_is_null() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 20, null, "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_age_is_null() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", null, "male", "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_age_is_null() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", null, "male", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_age_is_below_18() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 17, "male", "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_age_is_below_18() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 17, "male", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_age_is_above_100() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 101, "male", "xxx@123.com", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_age_is_above_100() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 101, "male", "xxx@123.com", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_email_is_invalid() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 22, "male", "xxx@", "10123456789");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_email_is_invalid() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@", "10123456789");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_phone_is_not_start_with_1() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 22, "male", "xxx@123.com", "85297134217");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_phone_is_not_start_with_1() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@123.com", "85297134217");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should_not_register_when_user_phone_number_length_is_not_11() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 22, "male", "xxx@123.com", "152971342179");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void should_not_register_when_user_phone_number_length_is_not_11() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto userDto =
+                new UserDto("chen", 22, "male", "xxx@123.com", "152971342179");
+        String userJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(post("/user/register")
+                .content(userJson)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 //
-//    @Test
-//    public void should__register_when_user_info_is_valid() throws Exception {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        UserDto userDto =
-//                new UserDto("chen", 22, "male", "xxx@123.com", "15297134217");
-//        String userJson = objectMapper.writeValueAsString(userDto);
-//        mockMvc.perform(post("/user/register")
-//                .content(userJson)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated())
-//                .andExpect(header().string("index", "2"));
-//    }
 //
 //    @Test
 //    public void should_return_users_list_with_expect_format() throws Exception {

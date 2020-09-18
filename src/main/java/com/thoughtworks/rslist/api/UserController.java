@@ -82,4 +82,8 @@ public class UserController {
         commentError.setErrorMessage("invalid param");
         return ResponseEntity.badRequest().body(commentError);
     }
+
+    private static UserDto mapFromUserEntityToUserDto(UserEntity userEntity) {
+        return null;
+    }
 }
