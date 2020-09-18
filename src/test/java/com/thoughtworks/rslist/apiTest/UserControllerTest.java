@@ -42,7 +42,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void should__register_when_user_info_is_valid() throws Exception {
+    public void should_register_when_user_info_is_valid() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto =
                 new UserDto("chen", 22, "male", "xxx@123.com", "15297134217");
@@ -76,11 +76,11 @@ public class UserControllerTest {
         String url = "/users/" + id;
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userName" ,is("chen")))
-                .andExpect(jsonPath("$.age" ,is(22)))
-                .andExpect(jsonPath("$.gender" ,is("male")))
-                .andExpect(jsonPath("$.email" ,is("xxx@123.com")))
-                .andExpect(jsonPath("$.phone" ,is("15297134217")));
+                .andExpect(jsonPath("$.user_name" ,is("chen")))
+                .andExpect(jsonPath("$.user_age" ,is(22)))
+                .andExpect(jsonPath("$.user_gender" ,is("male")))
+                .andExpect(jsonPath("$.user_email" ,is("xxx@123.com")))
+                .andExpect(jsonPath("$.user_phone" ,is("15297134217")));
     }
 
     @Test

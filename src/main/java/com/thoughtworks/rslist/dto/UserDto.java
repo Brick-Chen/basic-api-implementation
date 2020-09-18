@@ -1,14 +1,16 @@
 package com.thoughtworks.rslist.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     @NotEmpty
     @Size(max = 8)
@@ -33,25 +35,25 @@ public class UserDto {
     @JsonProperty("user_phone")
     private String phone;
 
-    public UserDto() {
+//    public UserDto() {
+//
+//    }
 
-    }
-
-    public UserDto(String name, Integer age, String gender, String email, String phone) {
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.email = email;
-        this.phone = phone;
-    }
-
-    public UserDto(@Valid UserDto other) {
-        this.name = other.getName();
-        this.age = other.getAge();
-        this.gender = other.getGender();
-        this.email = other.getEmail();
-        this.phone = other.getPhone();
-    }
+//    public UserDto(String name, Integer age, String gender, String email, String phone) {
+//        this.name = name;
+//        this.age = age;
+//        this.gender = gender;
+//        this.email = email;
+//        this.phone = phone;
+//    }
+//
+//    public UserDto(@Valid UserDto other) {
+//        this.name = other.getName();
+//        this.age = other.getAge();
+//        this.gender = other.getGender();
+//        this.email = other.getEmail();
+//        this.phone = other.getPhone();
+//    }
 
     public boolean equals(Object o) {
         if (!(o instanceof UserDto)) {

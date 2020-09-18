@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEvent;
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.RsEventEntity;
+import com.thoughtworks.rslist.exceptions.CommentError;
+import com.thoughtworks.rslist.exceptions.InvalidRsEventIndexException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.UserService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class RsController {
@@ -44,11 +47,19 @@ public class RsController {
     return ResponseEntity.created(null).build();
   }
 
-//  @GetMapping("/rs/{index}")
-//  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) {
-//    List<RsEvent> rsList = userService.getRsEvents();
-//    return ResponseEntity.ok(rsList.get(index - 1));
-//  }
+  @GetMapping("/rs/{index}")
+  public ResponseEntity<RsEvent> getRsEvent(@PathVariable int index) throws InvalidRsEventIndexException {
+    Optional<RsEventEntity> rsEventEntity= rsEventRepository.findById(index);
+    if (!rsEventEntity.isPresent()) {
+      throw new InvalidRsEventIndexException();
+    }
+    RsEventEntity rsEvent = rsEventEntity.get();
+    RsEvent target = RsEvent.builder()
+            .eventName(rsEvent.getEventName())
+            .keyword(rsEvent.getKeyword())
+            .build();
+    return ResponseEntity.ok(target);
+  }
 
 //  @GetMapping("/rs/list")
 //  public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
@@ -89,5 +100,13 @@ public class RsController {
 //    rsList.remove(index - 1);
 //    return ResponseEntity.status(200).build();
 //  }
+
+  @ExceptionHandler(InvalidRsEventIndexException.class)
+  public ResponseEntity<CommentError> handleInvalidRsEventIndex(InvalidRsEventIndexException ex) {
+    CommentError commentError = new CommentError();
+    commentError.setErrorMessage("invalid id");
+    return ResponseEntity.badRequest().body(commentError);
+  }
+
 
 }

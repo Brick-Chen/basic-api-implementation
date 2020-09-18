@@ -2,6 +2,8 @@ package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.dto.UserDto;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.exceptions.CommentError;
+import com.thoughtworks.rslist.exceptions.InvalidUserIdException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.UserService;
@@ -38,19 +40,25 @@ public class UserController {
                 .phone(userDto.getPhone())
                 .build();
         userRepository.save(userEntity);
-        userService.getUsersList().add(userDto);
-//        int pos = userService.getUsersList().size();
-//        HttpHeaders httpHeaders = userService.setHeaders(pos);
-//        return ResponseEntity.status(201).headers(httpHeaders).build();
+
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping("users/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) throws InvalidUserIdException {
         Optional<UserEntity> target = userRepository.findById(id);
-        return target.
-                map(userEntity -> ResponseEntity.status(200).body(userEntity))
-                .orElseGet(() -> ResponseEntity.status(200).body(null));
+        if (target.isPresent()) {
+            UserEntity userEntity = target.get();
+            UserDto userDto = UserDto.builder()
+                    .name(userEntity.getUserName())
+                    .age(userEntity.getAge())
+                    .gender(userEntity.getGender())
+                    .email(userEntity.getEmail())
+                    .phone(userEntity.getPhone())
+                    .build();
+            return ResponseEntity.ok(userDto);
+        }
+        throw new InvalidUserIdException();
     }
 
     @DeleteMapping("/del/users/{id}")
@@ -66,5 +74,12 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUserList() {
         return ResponseEntity.ok(userService.getUsersList());
+    }
+
+    @ExceptionHandler(InvalidUserIdException.class)
+    public ResponseEntity<CommentError> handleInvalidUserIdException(InvalidUserIdException invalidUserIdException) {
+        CommentError commentError = new CommentError();
+        commentError.setErrorMessage("invalid param");
+        return ResponseEntity.badRequest().body(commentError);
     }
 }

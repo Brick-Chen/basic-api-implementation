@@ -82,23 +82,30 @@ public class RsControllerTest {
         Assertions.assertEquals(0, rsEvents.size());
     }
 
-//    @Test
-//    public void should_return_one_rs_event() throws Exception {
-//        mockMvc.perform(get("/rs/1"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.eventName", is("第一条事件")))
-//                .andExpect(jsonPath("$.keyword", is("无分类")));
-//
-//        mockMvc.perform(get("/rs/2"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.eventName", is("第二条事件")))
-//                .andExpect(jsonPath("$.keyword", is("无分类")));
-//
-//        mockMvc.perform(get("/rs/3"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.eventName", is("第三条事件")))
-//                .andExpect(jsonPath("$.keyword", is("无分类")));
-//    }
+    @Test
+    public void should_return_one_rs_event() throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .voteNum(10)
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .userId(userEntity.getId())
+                .build();
+        rsEventRepository.save(rsEventEntity);
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")));
+    }
 //
 //    @Test
 //    public void should_return_a_list_of_rs_events_by_range() throws Exception {
