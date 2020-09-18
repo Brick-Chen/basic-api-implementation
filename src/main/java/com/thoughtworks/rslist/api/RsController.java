@@ -8,6 +8,7 @@ import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exceptions.CommentError;
 import com.thoughtworks.rslist.exceptions.InvalidRsEventIndexException;
+import com.thoughtworks.rslist.exceptions.InvalidUserIdException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.UserService;
@@ -72,6 +73,32 @@ public class RsController {
     return ResponseEntity.ok(target);
   }
 
+  @PatchMapping("/rs/{rsEventId}")
+  public ResponseEntity updateRsEvent(@Valid @RequestBody RsEvent rsEvent, @PathVariable int rsEventId)
+          throws Exception {
+    Optional<RsEventEntity> targetEvent = rsEventRepository.findById(rsEventId);
+    if(!targetEvent.isPresent()) {
+      throw new InvalidRsEventIndexException();
+    }
+
+    RsEventEntity targetEventEntity = targetEvent.get();
+    if (rsEvent.getUserId() != targetEventEntity.getUser().getId()) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    String modifiedKeyword = rsEvent.getKeyword();
+    String modifiedEventName = rsEvent.getEventName();
+    if (modifiedEventName != null && !modifiedEventName.equals("")) {
+      targetEventEntity.setEventName(modifiedEventName);
+    }
+
+    if(modifiedKeyword != null && !modifiedKeyword.equals("")) {
+      targetEventEntity.setKeyword(modifiedKeyword);
+    }
+    rsEventRepository.save(targetEventEntity);
+    return ResponseEntity.created(null).build();
+  }
+
 //  @GetMapping("/rs/list")
 //  public ResponseEntity<List<RsEvent>> getRsEventsByRange(@RequestParam(required = false) Integer start,
 //                                          @RequestParam(required = false) Integer end) {
@@ -116,6 +143,13 @@ public class RsController {
   public ResponseEntity<CommentError> handleInvalidRsEventIndex(InvalidRsEventIndexException ex) {
     CommentError commentError = new CommentError();
     commentError.setErrorMessage("invalid id");
+    return ResponseEntity.badRequest().body(commentError);
+  }
+
+  @ExceptionHandler(InvalidUserIdException.class)
+  public ResponseEntity<CommentError> handleInvalidUserIdException(InvalidUserIdException invalidUserIdException) {
+    CommentError commentError = new CommentError();
+    commentError.setErrorMessage("invalid param");
     return ResponseEntity.badRequest().body(commentError);
   }
 

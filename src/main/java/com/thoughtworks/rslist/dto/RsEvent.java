@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RsEvent {
-    @NotEmpty
+    @NotNull
     private String eventName;
 
-    @NotEmpty
+    @NotNull
     private String keyword;
 
     @NotNull

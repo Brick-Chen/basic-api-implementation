@@ -107,6 +107,152 @@ public class RsControllerTest {
                 .andExpect(jsonPath("$.keyword", is("游戏类")))
                 .andExpect(jsonPath("$.user.user_name", is("chen")));
     }
+
+    @Test
+    public void should_not_update_rs_event_name_when_rs_id_not_matches_user_id() throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .voteNum(10)
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .user(userEntity)
+                .build();
+        rsEventRepository.save(rsEventEntity);
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+
+        String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"篮球类\", \"userId\":" + 20  + "}";
+        mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
+                .content(jason)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_update_rs_event_name_when_rs_id_matches_user_id() throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .voteNum(10)
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .user(userEntity)
+                .build();
+        rsEventRepository.save(rsEventEntity);
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+
+        String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"\", \"userId\":" + userEntity.getId()  + "}";
+        mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
+                .content(jason)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("现在是大老爹拿球")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+    }
+
+    @Test
+    public void should_update_rs_keyword_name_when_rs_id_matches_user_id() throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .voteNum(10)
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .user(userEntity)
+                .build();
+        rsEventRepository.save(rsEventEntity);
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+
+        String jason = "{\"eventName\":\"\", \"keyword\":\"篮球类\", \"userId\":" + userEntity.getId()  + "}";
+        mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
+                .content(jason)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("篮球类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+    }
+
+    @Test
+    public void should_update_rs_event_name_and_keyword_name_when_rs_id_matches_user_id() throws Exception {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("chen")
+                .age(22)
+                .gender("male")
+                .email("xxx@123.com")
+                .phone("15297134217")
+                .voteNum(10)
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("只有风暴才能击倒大树")
+                .keyword("游戏类")
+                .user(userEntity)
+                .build();
+        rsEventRepository.save(rsEventEntity);
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("只有风暴才能击倒大树")))
+                .andExpect(jsonPath("$.keyword", is("游戏类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+
+        String jason = "{\"eventName\":\"现在是大老爹拿球\", \"keyword\":\"篮球类\", \"userId\":" + userEntity.getId()  + "}";
+        mockMvc.perform(patch("/rs/{rsEventId}", rsEventEntity.getId())
+                .content(jason)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/rs/{index}", rsEventEntity.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.eventName", is("现在是大老爹拿球")))
+                .andExpect(jsonPath("$.keyword", is("篮球类")))
+                .andExpect(jsonPath("$.user.user_name", is("chen")));
+    }
 //
 //    @Test
 //    public void should_return_a_list_of_rs_events_by_range() throws Exception {
