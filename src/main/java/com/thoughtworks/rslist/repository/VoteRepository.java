@@ -5,12 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VoteRepository extends PagingAndSortingRepository<VoteEntity, Integer> {
     List<VoteEntity> findAll();
 
-    @Query(nativeQuery = true, value = "SELECT * FROM vote WHERE time >= :start AND time <= :end")
-    List<VoteEntity> findAllByTimeBetween(LocalDateTime start, LocalDateTime end);
+//    @Query(nativeQuery = true, value = "SELECT * FROM vote")
+    List<VoteEntity> findByTimeBetween(Timestamp start, Timestamp end);
 }

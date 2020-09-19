@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 public class VoteController {
     private final VoteRepository voteRepository;
 
@@ -20,11 +23,11 @@ public class VoteController {
     }
 
     @GetMapping("/votes/range")
-    public ResponseEntity<List<Vote>> getVotesByRange(@RequestParam String start,
-                                                      @RequestParam String end) {
-        LocalDateTime time1 = LocalDateTime.parse(start);
-        LocalDateTime time2 = LocalDateTime.parse(end);
-        List<VoteEntity> voteEntities = voteRepository.findAllByTimeBetween(time1, time2);
+    public ResponseEntity<List<Vote>> getVotesByRange(@RequestParam long start,
+                                                      @RequestParam long end) {
+        Timestamp time1 = new Timestamp(start);
+        Timestamp time2 = new Timestamp(end);
+        List<VoteEntity> voteEntities = voteRepository.findByTimeBetween(time1, time2);
         List<Vote> votes = voteEntities.stream()
                 .map(VoteController::mapFromVoteEntityToVote).collect(Collectors.toList());
         return ResponseEntity.ok(votes);
