@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +20,7 @@ public class VoteEntity {
     @GeneratedValue
     private int id;
 
-    private LocalDateTime time;
+    private Timestamp time;
     private int num;
 
     @ManyToOne

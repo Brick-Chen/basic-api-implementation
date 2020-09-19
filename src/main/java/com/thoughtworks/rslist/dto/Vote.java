@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,11 +19,12 @@ import java.time.LocalDateTime;
 @Builder
 public class Vote  {
     private int userId;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime voteTime;
+    private int rsEventId;
+    private Timestamp voteTime;
     private int voteNum;
 
+//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    private LocalDateTime voteTime;
 }

@@ -23,6 +23,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -303,12 +304,12 @@ public class RsControllerTest {
         Assertions.assertEquals(1, rsEventNum);
         Assertions.assertEquals(0, voteNum);
 
-        LocalDateTime time = LocalDateTime.now();
+        Timestamp voteTime = new Timestamp(System.currentTimeMillis());
         ObjectMapper objectMapper = new ObjectMapper();
 
         Vote vote = Vote.builder()
                 .voteNum(4)
-                .voteTime(time)
+                .voteTime(voteTime)
                 .userId(userEntity.getId())
                 .build();
         String jason = objectMapper.writeValueAsString(vote);
@@ -317,15 +318,14 @@ public class RsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         List<VoteEntity> voteRecords = voteRepository.findAll();
         userEntity = userRepository.findById(voteRecords.get(0).getUser().getId()).get();
+        voteTime.setNanos(0);
 
         Assertions.assertEquals(4, voteRecords.get(0).getNum());
         Assertions.assertEquals(userEntity.getId(), voteRecords.get(0).getUser().getId());
         Assertions.assertEquals(rsEventEntity.getId(), voteRecords.get(0).getRsEvent().getId());
-        Assertions.assertEquals(time.format(formatter), voteRecords.get(0).getTime().toString());
+        Assertions.assertEquals(voteTime.toString(), voteRecords.get(0).getTime().toString());
         Assertions.assertEquals(6, userEntity.getVoteNum());
     }
 
@@ -356,12 +356,12 @@ public class RsControllerTest {
         Assertions.assertEquals(1, rsEventNum);
         Assertions.assertEquals(0, voteNum);
 
-        LocalDateTime time = LocalDateTime.now();
+        Timestamp voteTime = new Timestamp(System.currentTimeMillis());
         ObjectMapper objectMapper = new ObjectMapper();
 
         Vote vote = Vote.builder()
                 .voteNum(12)
-                .voteTime(time)
+                .voteTime(voteTime)
                 .userId(userEntity.getId())
                 .build();
         String jason = objectMapper.writeValueAsString(vote);
