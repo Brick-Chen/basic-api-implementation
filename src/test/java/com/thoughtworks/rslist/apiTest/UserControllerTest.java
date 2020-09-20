@@ -74,7 +74,7 @@ public class UserControllerTest {
         userRepository.save(user);
 
         Integer id = user.getId();
-        String url = "/users/" + id;
+        String url = "/user/" + id;
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user_name" ,is("chen")))
@@ -105,7 +105,7 @@ public class UserControllerTest {
 
 
         Integer id = user.getId();
-        String url = "/del/users/" + id;
+        String url = "/del/user/" + id;
         mockMvc.perform(delete(url))
                 .andExpect(status().isNoContent());
 

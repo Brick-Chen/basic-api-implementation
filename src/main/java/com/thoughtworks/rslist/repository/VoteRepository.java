@@ -14,4 +14,6 @@ public interface VoteRepository extends PagingAndSortingRepository<VoteEntity, I
 
 //    @Query(nativeQuery = true, value = "SELECT * FROM vote")
     List<VoteEntity> findByTimeBetween(Timestamp start, Timestamp end);
+
+    List<VoteEntity> findAllByUserIdAndRsEventId(int userId, int rsEventId);
 }

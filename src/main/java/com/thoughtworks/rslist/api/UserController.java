@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.status(201).build();
     }
 
-    @GetMapping("users/{id}")
+    @GetMapping("user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) throws InvalidUserIdException {
         Optional<UserEntity> target = userRepository.findById(id);
         if (target.isPresent()) {
@@ -63,7 +63,7 @@ public class UserController {
         throw new InvalidUserIdException();
     }
 
-    @DeleteMapping("/del/users/{id}")
+    @DeleteMapping("/del/user/{id}")
     public ResponseEntity deleteUserById(@PathVariable Integer id) {
         Optional<UserEntity> target = userRepository.findById(id);
         if (target.isPresent()) {
@@ -87,13 +87,6 @@ public class UserController {
         return ResponseEntity.badRequest().body(commentError);
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<CommentError> handleInvalidUserException(MethodArgumentNotValidException ex) {
-//        CommentError commentError = new CommentError();
-//        commentError.setErrorMessage("invalid user");
-//        return ResponseEntity.badRequest().body(commentError);
-//    }
-
     private static UserDto mapFromUserEntityToUserDto(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
@@ -105,5 +98,12 @@ public class UserController {
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CommentError> handleInvalidUserException(MethodArgumentNotValidException ex) {
+        CommentError commentError = new CommentError();
+        commentError.setErrorMessage("invalid user");
+        return ResponseEntity.badRequest().body(commentError);
     }
 }

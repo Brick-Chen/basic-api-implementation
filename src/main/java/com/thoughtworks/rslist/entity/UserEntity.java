@@ -29,4 +29,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RsEventEntity> rsEventS;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<VoteEntity> voteEntities;
 }

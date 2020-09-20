@@ -40,7 +40,7 @@ public class RsController {
     this.voteRepository = voteRepository;
   }
 
-  @PostMapping("/rs/event")
+  @PostMapping("/rsEvent")
   public ResponseEntity addRsEvent(@Valid @RequestBody RsEvent rsEvent) {
     if (!userRepository.existsById(rsEvent.getUserId())) {
       return ResponseEntity.badRequest().build();
@@ -140,9 +140,9 @@ public class RsController {
     return ResponseEntity.ok(subEvents);
   }
 
-  @DeleteMapping("/rs/event/del/{index}")
+  @DeleteMapping("/rs/del/{index}")
   public ResponseEntity delEvent(@PathVariable int index) {
-    if (index < 1 || index > rsEventRepository.findAll().size()) {
+    if (index < 1) {
       throw new IndexOutOfBoundsException();
     }
     Optional<RsEventEntity> target = rsEventRepository.findById(index);
@@ -175,7 +175,7 @@ public class RsController {
   }
 
   @ExceptionHandler(InvalidRequestParam.class)
-  public ResponseEntity<CommentError> handleInvalidRequestParamException(InvalidRequestParam invalidUserIdException) {
+  public ResponseEntity<CommentError> handleInvalidRequestParamException(InvalidRequestParam ex) {
     CommentError commentError = new CommentError();
     commentError.setErrorMessage("invalid request param");
     return ResponseEntity.badRequest().body(commentError);
